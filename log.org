@@ -1,0 +1,28 @@
+* FastAPI learning
+
+- FastAPI: Web framework for building API apps with Python.
+    > Easy to learn
+    > Fast development
+    > High performance
+
+A hello-world FastAPI app looks like the following. 
+
+```python
+from fastapi import FastAPI
+
+app = FastAPI() # This app object will handle all incoming web requests
+
+@app.get("/")  # When someone visits this path, the "root" function is run
+def root():
+    return {"Hello": "World"}
+```
+
+- The @app.get("/") decorator of `root()` means that when someone visits the root path ("/"), then the `root()` function is run. This is FastAPI responsing to *GET requests*, which occur when someone visists the website in a browser.
+- The "/" means the main page (like visiting http://localhost:8000/)
+
+To run this:
+```uvicorn main:app --reload```
+
+- *Routes* are used to define different URLs that the app reponds to. E.g. we need a route to add or view todo items in a todo list app.
+
+
