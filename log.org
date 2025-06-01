@@ -29,3 +29,30 @@ To run this:
 - *Routes* are used to define different URLs that the app reponds to. 
 - E.g. we need a route to add or view todo items in a todo list app.
 
+
+
+* Learnings from the Say Hello App
+
+- FastAPI can serve HTML pages directly using `HTMLResponse` from `fastapi.responses`.
+- Static files (CSS, JavaScript, images) are served using the `StaticFiles` middleware:
+  ```python
+  app.mount("/static", StaticFiles(directory="static"), name="static")
+  ```
+- Frontend-backend communication:
+  - JavaScript makes `fetch()` requests to API endpoints (e.g., "/api/hello")
+  - FastAPI receives these requests and executes Python code
+  - The response (JSON data) is returned to the browser and processed by JavaScript
+- Async/await pattern is used in both:
+  - FastAPI with `async def` for endpoint functions
+  - JavaScript with `async function` and `await fetch()` for API calls
+- Error handling should be implemented on both sides:
+  - FastAPI has built-in error responses
+  - Frontend should handle connection issues and unexpected responses using try/catch
+- The page updates dynamically without reloading the entire page (single-page application concept)
+- Port management is important - only one process can use a port at a time
+- Using relative paths (`./style.css`) for static resources in HTML ensures proper loading when served by FastAPI
+
+You can run FastAPI apps in two ways:
+1. Direct execution: `python main.py` (using code that sets up uvicorn)
+2. Using uvicorn CLI: `uvicorn main:app --reload` (good for development with auto-reload)
+
