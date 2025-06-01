@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FastAPI Frontend Demo</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 600px;
+                margin: 50px auto;
+                padding: 20px;
+                text-align: center;
+                background-color: #f5f5f5;
+            }
+
+            h1 {
+                color: #333;
+                margin-bottom: 30px;
+            }
+
+            button {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                font-size: 18px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+            button:disabled {
+                background-color: #6c757d;
+                cursor: not-allowed;
+            }
+
+            #response {
+                margin-top: 30px;
+                padding: 20px;
+                background-color: white;
+                border-radius: 5px;
+                border: 1px solid #ddd;
+                font-size: 18px;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .success {
+                color: #28a745;
+                font-weight: bold;
+            }
+
+            .error {
+                color: #dc3545;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>FastAPI Frontend Demo</h1>
+        <p>Click the button below to send a request to FastAPI!</p>
+
+        <button id="helloButton" onclick="sayHello()">Say Hello</button>
+
+        <div id="response">Click the button to see the response...</div>
+
+        <script>
+            async function sayHello() {
+                const button = document.getElementById("helloButton");
+                const responseDiv = document.getElementById("response");
+
+                // Disable button and show loading state
+                button.disabled = true;
+                button.textContent = "Loading...";
+                responseDiv.textContent = "Sending request to FastAPI...";
+                responseDiv.className = "";
+
+                try {
+                    // Send GET request to FastAPI endpoint
+                    const response = await fetch("/api/hello");
+
+                    if (response.ok) {
+                        const data = await response.json();
+
+                        // Display the message from FastAPI
+                        responseDiv.textContent = `FastAPI says: "${data.message}"`;
+                        responseDiv.className = "success";
+                    } else {
+                        throw new Error(
+                            `HTTP error! status: ${response.status}`
+                        );
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    responseDiv.textContent = `Error: ${error.message}`;
+                    responseDiv.className = "error";
+                } finally {
+                    // Re-enable button
+                    button.disabled = false;
+                    button.textContent = "Say Hello";
+                }
+            }
+        </script>
+    </body>
+</html>
