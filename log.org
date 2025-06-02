@@ -54,3 +54,8 @@ You can run FastAPI apps in two ways:
 1. Direct execution: `python main.py` (using code that sets up uvicorn)
 2. Using uvicorn CLI: `uvicorn main:app --reload` (good for development with auto-reload)
 
+
+* React Chat App
+
+This is to give me some experience with react and also move closer towards the goal of making a chatbot (eventually LLM powered, just basic for now).
+
