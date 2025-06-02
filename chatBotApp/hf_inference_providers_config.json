@@ -1,0 +1,51 @@
+{
+  "system": "inference_providers",
+  "migration_notes": {
+    "old_url": "https://api-inference.huggingface.co/models/{model_id} (DEPRECATED)",
+    "new_url": "https://router.huggingface.co/{provider}/v1/chat/completions",
+    "format_change": "Now uses OpenAI-compatible chat completion API"
+  },
+  "recommended_approach": "huggingface_hub.InferenceClient",
+  "billing": {
+    "free_tier": "Very limited quota",
+    "pro_subscription": "$9/month with $2 inference credits",
+    "direct_provider": "Use provider API keys for direct billing"
+  },
+  "dependencies": [
+    "huggingface_hub",
+    "requests",
+    "python-dotenv"
+  ],
+  "environment_variables": {
+    "HUGGINGFACE_API_TOKEN": "Required - get from hf.co/settings/tokens"
+  },
+  "working_providers": [],
+  "recommended_config": {
+    "provider": "auto",
+    "model": "deepseek-ai/DeepSeek-V3-0324"
+  },
+  "implementation": {
+    "inference_client": {
+      "library": "huggingface_hub",
+      "example": "InferenceClient(api_key=token).chat.completions.create(model=model, messages=messages)"
+    },
+    "direct_http": {
+      "url_template": "https://router.huggingface.co/{provider}/v1/chat/completions",
+      "method": "POST",
+      "headers": {
+        "Authorization": "Bearer {token}",
+        "Content-Type": "application/json"
+      },
+      "payload_format": {
+        "model": "{model_id}",
+        "messages": [
+          {
+            "role": "user",
+            "content": "{prompt}"
+          }
+        ],
+        "max_tokens": 100
+      }
+    }
+  }
+}
