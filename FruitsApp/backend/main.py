@@ -7,8 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 class Fruit(BaseModel):
     name: str
-    color: str
-    weight: float
 
 
 class Fruits(BaseModel):
@@ -17,7 +15,7 @@ class Fruits(BaseModel):
 
 app = FastAPI()
 
-origins = ["http://localhost:8000"]
+origins = ["http://localhost:5173"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

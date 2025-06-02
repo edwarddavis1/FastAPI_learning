@@ -24,7 +24,7 @@ def test_add_fruit():
 
     memory_db["fruits"] = []
 
-    fruit_data = {"name": "apple", "color": "green", "weight": 150.5}
+    fruit_data = {"name": "apple"}
     response = client.post("/fruits", json=fruit_data)
     assert response.status_code == 200
     assert response.json() == {"fruits": [fruit_data]}
@@ -38,9 +38,9 @@ def test_add_multiple_fruits():
     memory_db["fruits"] = []
 
     fruits = [
-        {"name": "apple", "color": "red", "weight": 150.0},
-        {"name": "banana", "color": "yellow", "weight": 120.0},
-        {"name": "orange", "color": "orange", "weight": 170.0},
+        {"name": "apple"},
+        {"name": "banana"},
+        {"name": "orange"},
     ]
 
     for fruit in fruits:
@@ -55,9 +55,6 @@ def test_add_multiple_fruits():
 def test_invalid_fruit_data():
     """Test adding a fruit with invalid data."""
     invalid_fruit = {
-        "name": "apple",
-        "color": "red",
-        # Missing weight field
     }
 
     response = client.post("/fruits", json=invalid_fruit)
