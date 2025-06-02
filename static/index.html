@@ -4,52 +4,17 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>FastAPI Frontend Demo</title>
-        <link rel="stylesheet" href="static/style.css" />
+        <base href="/static/" />
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <h1>FastAPI Frontend Demo</h1>
+        <h1>FastAPI Demo</h1>
         <p>Click the button below to send a request to FastAPI!</p>
 
-        <button id="helloButton" onclick="sayHello()">Say Hello</button>
+        <button id="helloButton" onclick="sayHello()">Say Message</button>
 
         <div id="response">Click the button to see the response...</div>
 
-        <script>
-            async function sayHello() {
-                const button = document.getElementById("helloButton");
-                const responseDiv = document.getElementById("response");
-
-                // Disable button and show loading state
-                button.disabled = true;
-                button.textContent = "Loading...";
-                responseDiv.textContent = "Sending request to FastAPI...";
-                responseDiv.className = "";
-
-                try {
-                    // Send GET request to FastAPI endpoint
-                    const response = await fetch("/api/hello");
-
-                    if (response.ok) {
-                        const data = await response.json();
-
-                        // Display the message from FastAPI
-                        responseDiv.textContent = `FastAPI says: "${data.message}"`;
-                        responseDiv.className = "success";
-                    } else {
-                        throw new Error(
-                            `HTTP error! status: ${response.status}`
-                        );
-                    }
-                } catch (error) {
-                    console.error("Error:", error);
-                    responseDiv.textContent = `Error: ${error.message}`;
-                    responseDiv.className = "error";
-                } finally {
-                    // Re-enable button
-                    button.disabled = false;
-                    button.textContent = "Say Hello";
-                }
-            }
-        </script>
+        <script src="js/Hello.js"></script>
     </body>
 </html>

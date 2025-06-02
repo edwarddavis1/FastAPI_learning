@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
+import uvicorn
 
 app = FastAPI()
 
@@ -19,12 +20,10 @@ async def read_root():
 @app.get("/api/hello")
 async def say_hello():
     """API endpoint that prints Hello and returns it"""
-    message = "Hello"
+    message = "Hello World!"
     print(message)  # This prints to the console/terminal
     return {"message": message}
 
 
 if __name__ == "__main__":
-    import uvicorn
-
     uvicorn.run(app, host="127.0.0.1", port=8000)

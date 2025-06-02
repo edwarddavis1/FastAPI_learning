@@ -24,8 +24,6 @@ To run this:
 ```uvicorn main:app --reload```
 
 
-** Example: TODO List App
-
 - *Routes* are used to define different URLs that the app reponds to. 
 - E.g. we need a route to add or view todo items in a todo list app.
 
