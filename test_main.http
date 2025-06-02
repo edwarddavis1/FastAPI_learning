@@ -1,0 +1,11 @@
+@rootUrl=http://localhost:8000
+
+
+### Test the root endpoint (returns HTML)
+GET {{rootUrl}}
+Accept: text/html
+
+### Test the hello API endpoint (returns JSON)
+GET {{rootUrl}}/api/hello
+Accept: application/json
+
