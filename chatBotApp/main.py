@@ -99,7 +99,10 @@ async def query_huggingface(user_message):
 
 @app.get("/", response_class=HTMLResponse)
 async def get_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request, "app_name": "My ChatBot", "model_name": MODEL_ID},
+    )
 
 
 @app.websocket("/ws")

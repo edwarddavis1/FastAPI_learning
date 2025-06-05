@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Connect to WebSocket
     function connectWebSocket() {
         // Create WebSocket connection
+        // (The ws: protocol triggers a handshake with the server)
+        // (If HTTPS, use wss: for secure WebSocket)
         const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
         socket = new WebSocket(`${protocol}//${window.location.host}/ws`);
 

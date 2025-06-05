@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>ChatBot App</title>
+        <title>{{ app_name }}</title>
         <link
             rel="stylesheet"
             href="{{ url_for('static', path='/css/styles.css') }}"
@@ -22,8 +22,8 @@
                 <div class="message bot">
                     <div class="message-content">
                         <p>
-                            Hello! I'm an AI assistant powered by Hugging Face.
-                            How can I help you today?
+                            Hello! I'm an AI assistant powered by {{ model_name
+                            }} from Hugging Face. How can I help you today?
                         </p>
                     </div>
                 </div>
@@ -37,6 +37,7 @@
                 <button id="send-btn">Send</button>
             </div>
         </div>
+        <!-- <p>Powered by {{ model_name }}</p> -->
 
         <script src="{{ url_for('static', path='/js/chat.js') }}"></script>
     </body>
