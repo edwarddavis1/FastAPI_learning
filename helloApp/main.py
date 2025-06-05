@@ -30,7 +30,7 @@ async def read_root():
 @app.get("/api/hello")
 async def say_hello():
     """API endpoint that prints Hello and returns it"""
-    message = "Hello World!"
+    message = "Hello Ed!"
     print(message)  # This prints to the console/terminal
     return {"message": message}
 

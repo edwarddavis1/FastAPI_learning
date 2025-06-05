@@ -1,0 +1,35 @@
+### Get all fruits
+GET http://localhost:8000/fruits
+
+### Add a fruit - Apple
+POST http://localhost:8000/fruits
+Content-Type: application/json
+
+{
+    "name": "apple",
+    "color": "red",
+    "weight": 150
+}
+
+### Add a fruit - Banana
+POST http://localhost:8000/fruits
+Content-Type: application/json
+
+{
+    "name": "banana",
+    "color": "yellow",
+    "weight": 120
+}
+
+### Add a fruit - Orange
+POST http://localhost:8000/fruits
+Content-Type: application/json
+
+{
+    "name": "orange",
+    "color": "orange",
+    "weight": 170
+}
+
+### Get all fruits again (after adding)
+GET http://localhost:8000/fruits
