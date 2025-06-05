@@ -4,8 +4,6 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from dotenv import load_dotenv
-import json
-import asyncio
 import logging
 from pathlib import Path
 from huggingface_hub import InferenceClient
