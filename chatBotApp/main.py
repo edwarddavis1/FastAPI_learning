@@ -76,7 +76,7 @@ async def query_huggingface(user_message):
         # Use the new chat completion format
         completion = client.chat.completions.create(
             model=MODEL_ID,
-            messages=[{"role": "user", "content": user_message}],
+            messages=user_message,
             max_tokens=200,
             temperature=0.7,
         )
@@ -123,7 +123,7 @@ async def websocket_endpoint(websocket: WebSocket):
             await manager.send_message("Bot is thinking...", websocket)
 
             # Get response from Hugging Face Inference Providers
-            response = await query_huggingface(user_message)
+            response = await query_huggingface(conversation_history)
             # Extract bot's reply from the new response format
             if "error" in response:
                 bot_reply = f"Error: {response['error']}"
