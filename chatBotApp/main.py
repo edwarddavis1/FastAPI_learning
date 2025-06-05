@@ -73,7 +73,7 @@ async def query_huggingface(user_message):
         logger.info(f"Model: {MODEL_ID}")
         logger.info(f"User message: {user_message}")
 
-        # Use the new chat completion format (OpenAI-compatible)
+        # Use the new chat completion format
         completion = client.chat.completions.create(
             model=MODEL_ID,
             messages=[{"role": "user", "content": user_message}],
