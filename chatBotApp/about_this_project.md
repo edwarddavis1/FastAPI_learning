@@ -59,14 +59,14 @@ In order to access a language model for our chat (e.g. Deepseek V3, 671B param),
 ```python
 completion = client.chat.completions.create(
     model=MODEL_ID,
-    messages=[{"role": "user", "content": user_message}],
+    messages=conversation_history,
     max_tokens=200,
     temperature=0.7,
 )
 bot_response = completion.choices[0].message.content
 ```
 
-where `user_message` is the message input by the user in the frontend.
+where `conversation_history` is the entire conversation (both user inputs and bot replies) up to this point. Each entry in the conversation history has the format `{"role":role, "content":content}`, where the role is e.g. user or assistant, and content is the message.
 
 **Endpoints**
 

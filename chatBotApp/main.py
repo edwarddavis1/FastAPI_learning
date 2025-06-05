@@ -27,9 +27,9 @@ templates = Jinja2Templates(directory=Path("app/templates"))
 
 # Hugging Face Inference Providers configuration
 HF_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
-MODEL_ID = os.getenv(
-    "MODEL_ID", "deepseek-ai/DeepSeek-V3-0324"
-)  # Using the working model from our tests
+
+# MODEL_ID = "deepseek-ai/DeepSeek-V3-0324"
+MODEL_ID = "Qwen/Qwen3-235B-A22B"
 
 # Initialize the InferenceClient for the new Inference Providers system
 client = InferenceClient(api_key=HF_API_TOKEN) if HF_API_TOKEN else None
@@ -58,7 +58,7 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-async def query_huggingface(user_message):
+async def query_huggingface(conversation_history):
     """
     Query the NEW Hugging Face Inference Providers API with the given message
     Uses the modern InferenceClient with chat completion format
@@ -71,13 +71,13 @@ async def query_huggingface(user_message):
 
         logger.info(f"Sending request to Hugging Face Inference Providers")
         logger.info(f"Model: {MODEL_ID}")
-        logger.info(f"User message: {user_message}")
+        logger.info(f"Conversation length: {len(conversation_history)}")
 
         # Use the new chat completion format
         completion = client.chat.completions.create(
             model=MODEL_ID,
-            messages=user_message,
-            max_tokens=200,
+            messages=conversation_history,
+            max_tokens=1000,
             temperature=0.7,
         )
         # Extract the response
@@ -124,6 +124,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
             # Get response from Hugging Face Inference Providers
             response = await query_huggingface(conversation_history)
+
             # Extract bot's reply from the new response format
             if "error" in response:
                 bot_reply = f"Error: {response['error']}"
