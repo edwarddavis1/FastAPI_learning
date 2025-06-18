@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatMessages = document.getElementById("chat-messages");
     const userInput = document.getElementById("user-input");
     const sendBtn = document.getElementById("send-btn");
+    const addImgBtn = document.getElementById("add-img-btn");
+    const imageInput = document.getElementById("image-input");
 
     let socket = null;
     let isConnected = false;
@@ -83,6 +85,50 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Add image function
+    function addImage(imageUrl) {
+        imageInput.click();
+    }
+
+    // Handle image input change
+    imageInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            uploadImage(file);
+        }
+    });
+
+    // Upload image to server
+    async function uploadImage(file) {
+        const formData = new FormData();
+        formData.append("img", file);
+
+        try {
+            const response = await fetch("/upload-img", {
+                method: "POST",
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                appendBotMessage(`Img "${file.name}" uploaded successfully.`);
+            } else {
+                appendBotMessage(
+                    `Error uploading Image: ${
+                        result.detail || "Unable to make HTTP request"
+                    }`
+                );
+            }
+        } catch (error) {
+            appendBotMessage(`Error uploading Image: ${error.message}`);
+        }
+
+        // Clear the file input and scroll to bottom
+        imageInput.value = "";
+        scrollToBottom();
+    }
+
     // Append user message to chat
     function appendUserMessage(message) {
         const messageElement = document.createElement("div");
@@ -159,6 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Event listeners
     sendBtn.addEventListener("click", sendMessage);
+    addImgBtn.addEventListener("click", addImage);
 
     userInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter" && !event.shiftKey) {

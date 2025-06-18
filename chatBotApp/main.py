@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, UploadFile, File
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
@@ -29,7 +29,8 @@ templates = Jinja2Templates(directory=Path("app/templates"))
 HF_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
 
 # MODEL_ID = "deepseek-ai/DeepSeek-V3-0324"
-MODEL_ID = "Qwen/Qwen3-235B-A22B"
+# MODEL_ID = "Qwen/Qwen3-235B-A22B"
+MODEL_ID = "Qwen/Qwen2.5-VL-72B-Instruct"
 
 # Initialize the InferenceClient for the new Inference Providers system
 client = InferenceClient(api_key=HF_API_TOKEN) if HF_API_TOKEN else None
@@ -77,7 +78,7 @@ async def query_huggingface(conversation_history):
         completion = client.chat.completions.create(
             model=MODEL_ID,
             messages=conversation_history,
-            max_tokens=1000,
+            # max_tokens=1000,
             temperature=0.7,
         )
         # Extract the response
@@ -117,7 +118,10 @@ async def websocket_endpoint(websocket: WebSocket):
             user_message = data.strip()
 
             # Add user message to conversation history
-            conversation_history.append({"role": "user", "content": user_message})
+            # conversation_history.append({"role": "user", "content": user_message})
+            conversation_history.append(
+                {"role": "user", "content": [{"type": "text", "text": user_message}]}
+            )
 
             # Send a "thinking" message
             await manager.send_message("Bot is thinking...", websocket)
@@ -135,7 +139,13 @@ async def websocket_endpoint(websocket: WebSocket):
                 bot_reply = "Sorry, I couldn't understand the model's response."
 
             # Add bot reply to conversation history
-            conversation_history.append({"role": "assistant", "content": bot_reply})
+            # conversation_history.append({"role": "assistant", "content": bot_reply})
+            conversation_history.append(
+                {
+                    "role": "assistant",
+                    "content": [{"type": "text", "text": bot_reply}],
+                }
+            )
 
             # Send bot's reply to the client
             await manager.send_message(bot_reply, websocket)
@@ -149,6 +159,12 @@ async def websocket_endpoint(websocket: WebSocket):
         except:
             pass
         manager.disconnect(websocket)
+
+
+@app.post("/upload-img")
+async def upload_img(img: UploadFile = File(...)):
+
+    print(f"Uploading {img.filename}...")
 
 
 if __name__ == "__main__":
