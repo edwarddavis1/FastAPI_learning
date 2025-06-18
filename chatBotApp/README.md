@@ -2,7 +2,7 @@
 
 A web application that allows users to chat with Large Language Models (LLMs) using Hugging Face's **new Inference Providers system**.
 
-## ✨ Features
+## Features
 
 -   Real-time chat interface with WebSocket communication
 -   Integration with Hugging Face's **modern Inference Providers API**
@@ -10,14 +10,11 @@ A web application that allows users to chat with Large Language Models (LLMs) us
 -   Responsive design for desktop and mobile devices
 -   OpenAI-compatible chat completion format
 
-## 🔄 Recent Migration
+## Example Usage
 
-This app has been **successfully migrated** from the deprecated `api-inference.huggingface.co` to the new **Inference Providers system**, providing:
+![ChatBot Demo](demo/chatbot_demo_gif.gif)
 
--   Better reliability and performance
--   Access to more models
--   Modern OpenAI-compatible API format
--   Improved error handling
+_Screenshot of the chatbot interface._
 
 ## Prerequisites
 
