@@ -8,8 +8,8 @@ This is a simple web application with a "Say Hello" button. When clicked, JavaSc
 
 ![Hello App Demo](helloApp/demo/helloApp_demo.gif)
 
-## Hugging Face Chatbot App
+## Multimodal Hugging Face Chatbot App
 
-A hugging face language model interface. Use of websockets for full-duplex connections, allowing for live updates from messaging between user and model. App uses python and FastAPI for the backend and HTML/CSS with Javascript for the frontend.
+A multimodal hugging face language model interface. Use of websockets for full-duplex connections, allowing for live updates from messaging between user and model. App uses python and FastAPI for the backend and HTML/CSS with Javascript for the frontend.
 
 ![Chatbot Demo](chatBotApp/demo/chatbot_demo_gif.gif)
