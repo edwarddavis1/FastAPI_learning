@@ -15,8 +15,7 @@ from dotenv import load_dotenv
 import logging
 from pathlib import Path
 from huggingface_hub import InferenceClient
-import io
-from PIL import Image
+import base64
 
 # Configure logging
 logging.basicConfig(
@@ -174,20 +173,27 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.post("/upload-img")
 async def upload_img(img: UploadFile = File(...)):
     # Validate file type
-    # TODO: extend to other image types in the future
-    if not img.filename or not img.filename.endswith(".png"):
-        raise HTTPException(status_code=400, detail="Only png files are allowed")
+
+    file_type = img.content_type
+    image_types = ["image/png", "image/jpeg", "image/jpg", "image/JPG"]
+
+    if not img.filename or file_type not in image_types:
+        raise HTTPException(status_code=400, detail="Only image files are allowed")
 
     print(f"Uploading {img.filename}...")
 
     # Read the img file
-    contents = await img.read()
-    image = Image.open(io.BytesIO(contents))
+    content = await img.read()
+    base64_img = base64.b64encode(content).decode("utf-8")
+    img_url = f"data:image/{file_type};base64,{base64_img}"
 
     # Add the image into the conversation history
-    # app.state.conversation_history.append(
-    #     {"role": "user", "content": [{"type": "image", "image": image}]}
-    # )
+    app.state.conversation_history.append(
+        {
+            "role": "user",
+            "content": [{"type": "image_url", "image_url": {"url": img_url}}],
+        }
+    )
 
 
 if __name__ == "__main__":
