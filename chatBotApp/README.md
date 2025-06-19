@@ -20,7 +20,6 @@ _Screenshot of the chatbot interface._
 
 -   Python 3.8 or higher
 -   A Hugging Face API token (get it from [Hugging Face](https://huggingface.co/settings/tokens))
--   **Note**: For reliable usage, consider a [Hugging Face PRO subscription](https://huggingface.co/subscribe/pro) ($9/month with $2 inference credits)
 
 ## Installation
 
