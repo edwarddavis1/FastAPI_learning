@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Add image function
-    function addImage(imageUrl) {
+    function addImage() {
         imageInput.click();
     }
 
@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const result = await response.json();
+            console.log(result);
 
             if (response.ok) {
                 appendBotMessage(`Img "${file.name}" uploaded successfully.`);

@@ -1,5 +1,13 @@
 import os
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, UploadFile, File
+from fastapi import (
+    FastAPI,
+    Request,
+    WebSocket,
+    WebSocketDisconnect,
+    UploadFile,
+    File,
+    HTTPException,
+)
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
@@ -7,6 +15,8 @@ from dotenv import load_dotenv
 import logging
 from pathlib import Path
 from huggingface_hub import InferenceClient
+import io
+from PIL import Image
 
 # Configure logging
 logging.basicConfig(
@@ -59,7 +69,7 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-async def query_huggingface(conversation_history):
+async def query_huggingface():
     """
     Query the NEW Hugging Face Inference Providers API with the given message
     Uses the modern InferenceClient with chat completion format
@@ -72,12 +82,12 @@ async def query_huggingface(conversation_history):
 
         logger.info(f"Sending request to Hugging Face Inference Providers")
         logger.info(f"Model: {MODEL_ID}")
-        logger.info(f"Conversation length: {len(conversation_history)}")
+        logger.info(f"Conversation length: {len(app.state.conversation_history)}")
 
         # Use the new chat completion format
         completion = client.chat.completions.create(
             model=MODEL_ID,
-            messages=conversation_history,
+            messages=app.state.conversation_history,
             # max_tokens=1000,
             temperature=0.7,
         )
@@ -111,15 +121,15 @@ async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
 
     try:
-        conversation_history = []
+        app.state.conversation_history = []
 
         while True:
             data = await websocket.receive_text()
             user_message = data.strip()
 
             # Add user message to conversation history
-            # conversation_history.append({"role": "user", "content": user_message})
-            conversation_history.append(
+            # app.state.conversation_history.append({"role": "user", "content": user_message})
+            app.state.conversation_history.append(
                 {"role": "user", "content": [{"type": "text", "text": user_message}]}
             )
 
@@ -127,7 +137,7 @@ async def websocket_endpoint(websocket: WebSocket):
             await manager.send_message("Bot is thinking...", websocket)
 
             # Get response from Hugging Face Inference Providers
-            response = await query_huggingface(conversation_history)
+            response = await query_huggingface()
 
             # Extract bot's reply from the new response format
             if "error" in response:
@@ -139,8 +149,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 bot_reply = "Sorry, I couldn't understand the model's response."
 
             # Add bot reply to conversation history
-            # conversation_history.append({"role": "assistant", "content": bot_reply})
-            conversation_history.append(
+            # app.state.conversation_history.append({"role": "assistant", "content": bot_reply})
+            app.state.conversation_history.append(
                 {
                     "role": "assistant",
                     "content": [{"type": "text", "text": bot_reply}],
@@ -163,8 +173,21 @@ async def websocket_endpoint(websocket: WebSocket):
 
 @app.post("/upload-img")
 async def upload_img(img: UploadFile = File(...)):
+    # Validate file type
+    # TODO: extend to other image types in the future
+    if not img.filename or not img.filename.endswith(".png"):
+        raise HTTPException(status_code=400, detail="Only png files are allowed")
 
     print(f"Uploading {img.filename}...")
+
+    # Read the img file
+    contents = await img.read()
+    image = Image.open(io.BytesIO(contents))
+
+    # Add the image into the conversation history
+    # app.state.conversation_history.append(
+    #     {"role": "user", "content": [{"type": "image", "image": image}]}
+    # )
 
 
 if __name__ == "__main__":
