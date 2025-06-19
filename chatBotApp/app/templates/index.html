@@ -4,12 +4,17 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{{ app_name }}</title>
-        <link
+        <!-- <link
             rel="stylesheet"
             href="{{ url_for('static', path='/css/styles.css') }}"
-        />
+        /> -->
+        <link rel="stylesheet" href="../static/css/styles.css" />
         <link
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
             rel="stylesheet"
         />
     </head>
@@ -34,11 +39,18 @@
                     placeholder="Type your message here..."
                     rows="2"
                 ></textarea>
-                <button id="send-btn">Send</button>
+                <button id="add-img-btn" , class="btn">
+                    <i class="material-icons">add_photo_alternate</i>
+                </button>
+                <input type="file" id="image-input" accept="image/*" />
+                <button id="send-btn" , class="btn">
+                    <i class="material-icons">send</i>
+                </button>
             </div>
         </div>
         <!-- <p>Powered by {{ model_name }}</p> -->
 
-        <script src="{{ url_for('static', path='/js/chat.js') }}"></script>
+        <!-- <script src="{{ url_for('static', path='/js/chat.js') }}"></script> -->
+        <script src="../static/js/chat.js"></script>
     </body>
 </html>
